@@ -59,3 +59,32 @@ Shana      | Smith     |     4
     JOIN vehicles v ON o.id = v.owner_id
     GROUP BY (first_name, last_name)
     ORDER BY first_name;
+
+
+-- 3. Count the number of cars for each owner and display the average price for each of the cars as integers. Display the owners first_name, last_name, average price and count of vehicles. The first_name should be ordered in descending order. Only display results with more than one vehicle and an average price greater than 10000. Your output should look like this:
+
+/*
+first_name | last_name | average_price | count
+------------+-----------+---------------+-------
+Shana      | Smith     |         19875 |     4
+Sarah      | Palmer    |         16333 |     3
+Jane       | Smith     |         15000 |     2
+*/
+
+SELECT first_name, last_name, 
+  ROUND(AVG(price)) AS average_price, 
+  COUNT(owner_id) AS number_of_vehicles
+  FROM owners JOIN vehicleS ON owners.id = vehicles.owner_id
+  GROUP BY (first_name, last_name)
+  HAVING COUNT(owner_id) > 1 AND ROUND(AVG(price)) > 10000 
+  ORDER BY first_name DESC;
+
+
+SELECT first_name, last_name,
+  ROUND(AVG(price)) AS average_price,
+  COUNT(owner_id) AS number_of_vehicles
+  FROM owners o JOIN vehicles v ON o.id = v.owner_id
+  GROUP BY (first_name, last_name)
+  HAVING ROUND(AVG(price)) > 10000 AND COUNT(owner_id) > 1
+  ORDER BY first_name DESC;
+

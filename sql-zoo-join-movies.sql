@@ -89,3 +89,15 @@ SELECT name FROM actor
             WHERE name = 'Art Garkunkel'
         ) AND actor.name <> 'Art Garkunkel'
     )
+-- or
+
+    select name from actor, 
+     (select actorid from casting, 
+           (select distinct movieid from casting where actorid in (
+               select id from actor where name = 'Art Garfunkel'
+             )
+           ) movies_he_is_in 
+         where casting.movieid = movies_he_is_in.movieid
+           and actorid not in (select id from actor where name = 'Art Garfunkel')
+  ) actors_with_him 
+  where  actor.id = actors_with_him.actorid;
